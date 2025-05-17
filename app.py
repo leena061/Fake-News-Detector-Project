@@ -84,39 +84,31 @@ st.write("Enter the text of a news article below to determine if it's likely fak
 article_text = st.text_area("Enter news article text here:", height=300)
 
 # Prediction button
-# Inside the 'if st.button("Predict"):` block
 if st.button("Predict"):
     if article_text:
-        # --- Add these lines ---
-        st.write("Original Text Input:")
-        st.text(article_text) # Using st.text to preserve formatting if needed
-        # --- End Additions ---
-
-        # Perform preprocessing
+        # Perform preprocessing and prediction
         cleaned_text = preprocess_text(article_text)
 
-        # --- Add these lines ---
-        st.write("Cleaned Text after Preprocessing:")
-        st.text(cleaned_text) # Using st.text for potentially long cleaned text
-        # --- End Additions ---
-
+       
         if vectorizer is not None and model is not None:
-            # Transform the cleaned text using the loaded vectorizer
+  # Transform the cleaned text using the loaded vectorizer
             text_vector = vectorizer.transform([cleaned_text]) # Vectorizer expects an iterable
 
-            # Make prediction
-            prediction = model.predict(text_vector)
+    # Make prediction
+    prediction = model.predict(text_vector)
 
-            # Display result
-            st.subheader("Prediction:")
-            if prediction[0] == 0:
-                st.error("This article is predicted as: **FAKE NEWS**")
-            else:
-                st.success("This article is predicted as: **TRUE NEWS**")
-        else:
-             st.warning("Model or Vectorizer not loaded. Please check the file paths and try again.")
-else:
-        st.warning("Please enter some text to predict.")
+    # --- Add this line ---
+    st.write("Raw prediction output:")
+    st.write(prediction) # This will show something like [0] or [1]
+    # --- End Addition ---
+
+    # Display result
+    st.subheader("Prediction:")
+    if prediction[0] == 0: # Check if this condition is always met
+        st.error("This article is predicted as: **FAKE NEWS**")
+    else: # Check if this condition is never met
+        st.success("This article is predicted as: **TRUE NEWS**")
+            
 
 # Optional: Add some info about the model
 st.markdown("---")
