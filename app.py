@@ -84,18 +84,21 @@ st.write("Enter the text of a news article below to determine if it's likely fak
 article_text = st.text_area("Enter news article text here:", height=300)
 
 # Prediction button
+# Inside the 'if st.button("Predict"):` block
 if st.button("Predict"):
-        if article_text:
-            st.write("Original Text Input:") # Add this
-            st.write(article_text)          # Add this
+    if article_text:
+        # --- Add these lines ---
+        st.write("Original Text Input:")
+        st.text(article_text) # Using st.text to preserve formatting if needed
+        # --- End Additions ---
 
-            # Perform preprocessing
-            cleaned_text = preprocess_text(article_text)
+        # Perform preprocessing
+        cleaned_text = preprocess_text(article_text)
 
-            st.write("Cleaned Text after Preprocessing:") # Add this
-            st.write(cleaned_text)                       # Add this
-
-            # ... rest of your prediction logic ...
+        # --- Add these lines ---
+        st.write("Cleaned Text after Preprocessing:")
+        st.text(cleaned_text) # Using st.text for potentially long cleaned text
+        # --- End Additions ---
 
         if vectorizer is not None and model is not None:
             # Transform the cleaned text using the loaded vectorizer
