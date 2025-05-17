@@ -28,29 +28,31 @@ VECTORIZER_PATH = 'trained_model/tfidf_vectorizer.joblib'
 # Use st.cache_resource to load once and cache the results
 @st.cache_resource
 def load_model(model_path):
-    """Loads the trained model."""
-    try:
-        model = joblib.load(model_path)
-        return model
-    except FileNotFoundError:
-        st.error(f"Model file not found at: {model_path}")
-        return None
-    except Exception as e:
-        st.error(f"Error loading model: {e}")
-        return None
+        """Loads the trained model."""
+        try:
+            model = joblib.load(model_path)
+            st.write("Model loaded successfully!") # Add this
+            return model
+        except FileNotFoundError:
+            st.error(f"Model file not found at: {model_path}")
+            return None
+        except Exception as e:
+            st.error(f"Error loading model: {e}")
+            return None
 
 @st.cache_resource
 def load_vectorizer(vectorizer_path):
-    """Loads the fitted TF-IDF vectorizer."""
-    try:
-        vectorizer = joblib.load(vectorizer_path)
-        return vectorizer
-    except FileNotFoundError:
-        st.error(f"Vectorizer file not found at: {vectorizer_path}")
-        return None
-    except Exception as e:
-        st.error(f"Error loading vectorizer: {e}")
-        return None
+        """Loads the fitted TF-IDF vectorizer."""
+        try:
+            vectorizer = joblib.load(vectorizer_path)
+            st.write("Vectorizer loaded successfully!") # Add this
+            return vectorizer
+        except FileNotFoundError:
+            st.error(f"Vectorizer file not found at: {vectorizer_path}")
+            return None
+        except Exception as e:
+            st.error(f"Error loading vectorizer: {e}")
+            return None
 
 # Load the model and vectorizer when the app starts
 model = load_model(MODEL_PATH)
