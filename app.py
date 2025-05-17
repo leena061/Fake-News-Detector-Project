@@ -89,26 +89,24 @@ if st.button("Predict"):
         # Perform preprocessing and prediction
         cleaned_text = preprocess_text(article_text)
 
-       
         if vectorizer is not None and model is not None:
-  # Transform the cleaned text using the loaded vectorizer
+            # Transform the cleaned text using the loaded vectorizer
             text_vector = vectorizer.transform([cleaned_text]) # Vectorizer expects an iterable
 
-    # Make prediction
-    prediction = model.predict(text_vector)
+            # Make prediction
+            prediction = model.predict(text_vector)
 
-    # --- Add this line ---
-    st.write("Raw prediction output:")
-    st.write(prediction) # This will show something like [0] or [1]
-    # --- End Addition ---
+            # Display result
+            st.subheader("Prediction:")
+            if prediction[0] == 0:
+                st.error("This article is predicted as: **FAKE NEWS**")
+            else:
+                st.success("This article is predicted as: **TRUE NEWS**")
+        else:
+             st.warning("Model or Vectorizer not loaded. Please check the file paths and try again.")
+    else:
+        st.warning("Please enter some text to predict.")
 
-    # Display result
-    st.subheader("Prediction:")
-    if prediction[0] == 0: # Check if this condition is always met
-        st.error("This article is predicted as: **FAKE NEWS**")
-    else: # Check if this condition is never met
-        st.success("This article is predicted as: **TRUE NEWS**")
-            
 
 # Optional: Add some info about the model
 st.markdown("---")
