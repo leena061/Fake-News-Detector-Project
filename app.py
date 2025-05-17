@@ -22,39 +22,36 @@ except LookupError:
 # Define the path to your saved model and vectorizer
 # Make sure these paths are correct relative to where your app.py file is
 MODEL_PATH = 'trained_model/logistic_regression_model.joblib'
-VECTORIZER_PATH = 'trained_model/tfidf_vectorizer.joblib' 
+VECTORIZER_PATH = 'trained_model/tfidf_vectorizer.joblib'
 
 # Load the model and vectorizer
 # Use st.cache_resource to load once and cache the results
+
 @st.cache_resource
 def load_model(model_path):
-        """Loads the trained model."""
-        try:
-            model = joblib.load(model_path)
-            st.write("Model loaded successfully!")
-            return model
-        except FileNotFoundError:
-            st.error(f"Model file not found at: {model_path}")
-            return None # Keep the return None
-        except Exception as e: # Catch other potential exceptions
-            st.error(f"Error loading model:")
-            st.exception(e) # Use st.exception to show the traceback
-            return None
+    """Loads the trained model."""
+    try:
+        model = joblib.load(model_path)
+        return model
+    except FileNotFoundError:
+        st.error(f"Model file not found at: {model_path}")
+        return None
+    except Exception as e:
+        st.error(f"Error loading model: {e}")
+        return None
 
 @st.cache_resource
 def load_vectorizer(vectorizer_path):
-        """Loads the fitted TF-IDF vectorizer."""
-        try:
-            vectorizer = joblib.load(vectorizer_path)
-            st.write("Vectorizer loaded successfully!")
-            return vectorizer
-        except FileNotFoundError:
-            st.error(f"Vectorizer file not found at: {vectorizer_path}")
-            return None # Keep the return None
-        except Exception as e: # Catch other potential exceptions
-            st.error(f"Error loading vectorizer:")
-            st.exception(e) # Use st.exception to show the traceback
-            return None
+    """Loads the fitted TF-IDF vectorizer."""
+    try:
+        vectorizer = joblib.load(vectorizer_path)
+        return vectorizer
+    except FileNotFoundError:
+        st.error(f"Vectorizer file not found at: {vectorizer_path}")
+        return None
+    except Exception as e:
+        st.error(f"Error loading vectorizer: {e}")
+        return None
 
 # Load the model and vectorizer when the app starts
 model = load_model(MODEL_PATH)
@@ -88,9 +85,17 @@ article_text = st.text_area("Enter news article text here:", height=300)
 
 # Prediction button
 if st.button("Predict"):
-    if article_text:
-        # Perform preprocessing and prediction
-        cleaned_text = preprocess_text(article_text)
+        if article_text:
+            st.write("Original Text Input:") # Add this
+            st.write(article_text)          # Add this
+
+            # Perform preprocessing
+            cleaned_text = preprocess_text(article_text)
+
+            st.write("Cleaned Text after Preprocessing:") # Add this
+            st.write(cleaned_text)                       # Add this
+
+            # ... rest of your prediction logic ...
 
         if vectorizer is not None and model is not None:
             # Transform the cleaned text using the loaded vectorizer
@@ -107,7 +112,7 @@ if st.button("Predict"):
                 st.success("This article is predicted as: **TRUE NEWS**")
         else:
              st.warning("Model or Vectorizer not loaded. Please check the file paths and try again.")
-    else:
+else:
         st.warning("Please enter some text to predict.")
 
 # Optional: Add some info about the model
